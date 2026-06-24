@@ -1,0 +1,98 @@
+[
+  {
+    "id": "turkey-antalya-7n",
+    "title": "Анталья, 7 ночей",
+    "titleUz": "Antalya, 7 kecha",
+    "destination": "Турция",
+    "days": 8,
+    "budget": "$700-$1200",
+    "needs": ["Пляжный отдых", "Отель 5*", "Трансфер", "Семейный отдых"],
+    "priceFrom": 690,
+    "description": "Отель 5*, питание, групповой трансфер, страховка.",
+    "descriptionUz": "5* mehmonxona, ovqatlanish, guruh transferi, sug'urta."
+  },
+  {
+    "id": "turkey-istanbul-5d",
+    "title": "Стамбул + Босфор, 5 дней",
+    "titleUz": "Istanbul + Bosfor, 5 kun",
+    "destination": "Турция",
+    "days": 5,
+    "budget": "До $700",
+    "needs": ["Экскурсии", "Шопинг", "Бюджетный тур"],
+    "priceFrom": 520,
+    "description": "Отель 4*, обзорная экскурсия, прогулка по Босфору.",
+    "descriptionUz": "4* mehmonxona, shahar bo'ylab ekskursiya, Bosfor bo'ylab sayr."
+  },
+  {
+    "id": "egypt-sharm-7n",
+    "title": "Шарм-эль-Шейх, 7 ночей",
+    "titleUz": "Sharm el-Sheyx, 7 kecha",
+    "destination": "Египет",
+    "days": 8,
+    "budget": "$700-$1200",
+    "needs": ["Пляжный отдых", "Семейный отдых", "Трансфер"],
+    "priceFrom": 760,
+    "description": "Курортный отель, море, трансфер, страховка.",
+    "descriptionUz": "Kurort mehmonxona, dengiz, transfer, sug'urta."
+  },
+  {
+    "id": "uae-dubai-6d",
+    "title": "Дубай, 6 дней",
+    "titleUz": "Dubay, 6 kun",
+    "destination": "ОАЭ",
+    "days": 6,
+    "budget": "$1200-$2000",
+    "needs": ["Шопинг", "Экскурсии", "Семейный отдых", "Трансфер"],
+    "priceFrom": 1180,
+    "description": "Отель, трансферы, desert safari, city tour.",
+    "descriptionUz": "Mehmonxona, transferlar, desert safari, shahar turi."
+  },
+  {
+    "id": "thailand-phuket-9d",
+    "title": "Пхукет, 9 дней",
+    "titleUz": "Pxuket, 9 kun",
+    "destination": "Таиланд",
+    "days": 9,
+    "budget": "$1200-$2000",
+    "needs": ["Пляжный отдых", "Медовый месяц", "Трансфер"],
+    "priceFrom": 1350,
+    "description": "Пляжный отдых, острова, отель 4*.",
+    "descriptionUz": "Dengiz bo'yida dam olish, orollar, 4* mehmonxona."
+  },
+  {
+    "id": "vietnam-danang-9d",
+    "title": "Дананг, 9 дней",
+    "titleUz": "Danang, 9 kun",
+    "destination": "Вьетнам",
+    "days": 9,
+    "budget": "$1200-$2000",
+    "needs": ["Пляжный отдых", "Экскурсии", "Бюджетный тур"],
+    "priceFrom": 1190,
+    "description": "Море, экскурсии, отель, трансфер.",
+    "descriptionUz": "Dengiz, ekskursiyalar, mehmonxona, transfer."
+  },
+  {
+    "id": "maldives-honeymoon-6d",
+    "title": "Мальдивы, 6 дней",
+    "titleUz": "Maldiv orollari, 6 kun",
+    "destination": "Мальдивы",
+    "days": 6,
+    "budget": "$2000+",
+    "needs": ["Медовый месяц", "Пляжный отдых", "Отель 5*", "Трансфер"],
+    "priceFrom": 2100,
+    "description": "Резорт, трансфер, романтический ужин.",
+    "descriptionUz": "Rezort, transfer, romantik kechki ovqat."
+  },
+  {
+    "id": "china-discovery-8d",
+    "title": "Китай, 8 дней",
+    "titleUz": "Xitoy, 8 kun",
+    "destination": "Китай",
+    "days": 8,
+    "budget": "$1200-$2000",
+    "needs": ["Экскурсии", "Шопинг", "Авиабилеты"],
+    "priceFrom": 1280,
+    "description": "Городской тур, шопинг, культурные места.",
+    "descriptionUz": "Shahar turi, shopping, madaniy joylar."
+  }
+]

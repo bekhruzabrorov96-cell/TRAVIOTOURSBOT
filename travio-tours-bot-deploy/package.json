@@ -1,0 +1,16 @@
+{
+  "name": "travio-tours-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/bot.js",
+    "chat-id": "node src/get-chat-id.js",
+    "demo": "node scripts/serve-demo.js",
+    "doctor": "node scripts/doctor.js",
+    "check": "node --check src/bot.js && node --check src/catalog.js && node --check src/storage.js && node --check src/get-chat-id.js && node --check scripts/doctor.js && node --check scripts/serve-demo.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
