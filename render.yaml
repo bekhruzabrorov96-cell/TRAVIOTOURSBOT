@@ -13,3 +13,5 @@ services:
         sync: false
       - key: LEADS_FILE
         value: work/leads.jsonl
+      - key: SESSIONS_FILE
+        value: work/sessions.json

@@ -1,5 +1,5 @@
 import { loadTours, matchTours, formatTourList } from "./catalog.js";
-import { formatLeadForManager, saveLead } from "./storage.js";
+import { formatLeadForManager, loadSessions, saveLead, saveSessions } from "./storage.js";
 import { existsSync, readFileSync } from "node:fs";
 
 loadEnvFile();
@@ -7,6 +7,7 @@ loadEnvFile();
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const managerChatId = process.env.MANAGER_CHAT_ID;
 const leadsFile = process.env.LEADS_FILE || "work/leads.jsonl";
+const sessionsFile = process.env.SESSIONS_FILE || "work/sessions.json";
 
 if (!token) {
   console.error("Missing TELEGRAM_BOT_TOKEN. Create .env or export the variable before starting.");
@@ -14,7 +15,8 @@ if (!token) {
 }
 
 const apiBase = `https://api.telegram.org/bot${token}`;
-const sessions = new Map();
+const instanceId = Math.random().toString(36).slice(2, 8);
+const sessions = await loadSessions(sessionsFile);
 const tours = await loadTours();
 
 const destinations = [
@@ -183,7 +185,7 @@ const steps = [
 
 async function main() {
   const me = await telegram("getMe", {});
-  console.log(`Travio Tours Bot connected as @${me.result.username}`);
+  console.log(`Travio Tours Bot connected as @${me.result.username} [instance ${instanceId}]`);
   await telegram("deleteWebhook", { drop_pending_updates: false });
   console.log("Webhook cleared. Listening for Telegram messages.");
   let offset = 0;
@@ -213,13 +215,13 @@ async function handleMessage(message) {
   console.log(`Message from ${chatId}: ${text || "[non-text message]"}`);
 
   if (text === "/start" || text === "/restart") {
-    sessions.set(chatId, { stepIndex: 0, lead: {} });
+    await setSession(chatId, { stepIndex: 0, lead: {} });
     await ask(chatId);
     return;
   }
 
   if (!sessions.has(chatId)) {
-    sessions.set(chatId, { stepIndex: 0, lead: {} });
+    await setSession(chatId, { stepIndex: 0, lead: {} });
     await ask(chatId);
     return;
   }
@@ -239,10 +241,12 @@ async function handleMessage(message) {
     session.lead.language = session.language === "ru" ? "Русский" : "O'zbekcha";
   }
   session.stepIndex += 1;
+  await persistSessions();
 
   if (session.stepIndex >= steps.length) {
     await finishLead(chatId, session.lead);
     sessions.delete(chatId);
+    await persistSessions();
     return;
   }
 
@@ -314,6 +318,15 @@ function restartKeyboard() {
       keyboard: [[{ text: "/restart" }]]
     }
   };
+}
+
+async function setSession(chatId, session) {
+  sessions.set(chatId, session);
+  await persistSessions();
+}
+
+async function persistSessions() {
+  await saveSessions(sessions, sessionsFile);
 }
 
 async function sendMessage(chatId, text, extra = {}) {
