@@ -222,8 +222,10 @@ async function handleMessage(message) {
 
   if (!sessions.has(chatId)) {
     await setSession(chatId, { stepIndex: 0, lead: {} });
-    await ask(chatId);
-    return;
+    if (!isLanguageAnswer(text)) {
+      await ask(chatId);
+      return;
+    }
   }
 
   const session = sessions.get(chatId);
@@ -237,7 +239,11 @@ async function handleMessage(message) {
 
   session.lead[step.key] = answer;
   if (step.key === "language") {
-    session.language = answer === "Русский" ? "ru" : "uz";
+    if (!isLanguageAnswer(answer)) {
+      await sendMessage(chatId, "Tilni tanlang / Выберите язык", buildKeyboard(step));
+      return;
+    }
+    session.language = normalizeLanguage(answer);
     session.lead.language = session.language === "ru" ? "Русский" : "O'zbekcha";
   }
   session.stepIndex += 1;
@@ -251,6 +257,14 @@ async function handleMessage(message) {
   }
 
   await ask(chatId);
+}
+
+function normalizeLanguage(answer) {
+  return answer === "Русский" ? "ru" : "uz";
+}
+
+function isLanguageAnswer(answer) {
+  return answer === "Русский" || answer === "O'zbekcha";
 }
 
 async function ask(chatId) {
