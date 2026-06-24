@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Travio Tours Lead Bot</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17201c;
+      --muted: #66736d;
+      --line: #dde6e1;
+      --paper: #f7faf8;
+      --card: #ffffff;
+      --brand: #0b7d62;
+      --brand-dark: #075642;
+      --accent: #d89428;
+      --soft: #e7f3ef;
+      --danger: #b4382c;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(135deg, rgba(11, 125, 98, .12), rgba(216, 148, 40, .1)),
+        radial-gradient(circle at top right, rgba(11, 125, 98, .16), transparent 34rem),
+        var(--paper);
+      color: var(--ink);
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .workspace {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 118px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: white;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .mark img {
+      width: 104px;
+      height: auto;
+      display: block;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 54px);
+      line-height: 1;
+      max-width: 780px;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 680px;
+      line-height: 1.55;
+    }
+
+    .hero {
+      min-height: 330px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(90deg, rgba(8, 34, 27, .88), rgba(8, 34, 27, .42), rgba(8, 34, 27, .08)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='760' viewBox='0 0 1400 760'%3E%3Crect width='1400' height='760' fill='%23cfe8df'/%3E%3Cpath d='M0 530c150-60 270-78 390-58 141 24 248 92 410 52 168-42 232-139 380-127 82 7 154 44 220 88v275H0z' fill='%237db49f'/%3E%3Cpath d='M0 593c128-46 255-47 382-3 126 44 203 93 342 59 128-31 178-84 296-67 148 22 231 102 380 68v110H0z' fill='%230b7d62'/%3E%3Cg fill='%23e9c17a'%3E%3Crect x='805' y='205' width='230' height='250' rx='7'/%3E%3Crect x='1060' y='250' width='145' height='205' rx='7'/%3E%3C/g%3E%3Cg fill='%2395593c'%3E%3Cpath d='M842 455V305h42v150zM911 455V282h54v173zM1102 455V321h48v134z'/%3E%3C/g%3E%3Cg fill='%2317201c'%3E%3Ccircle cx='760' cy='455' r='17'/%3E%3Ccircle cx='727' cy='470' r='13'/%3E%3Ccircle cx='686' cy='463' r='14'/%3E%3Cpath d='M744 474h31l24 80h-74zM674 477h24l18 67h-59zM714 482h24l19 62h-61z'/%3E%3C/g%3E%3Cpath d='M1010 512h173c29 0 53 24 53 53v41H957v-41c0-29 24-53 53-53z' fill='%23f3f7f4'/%3E%3Ccircle cx='1022' cy='610' r='28' fill='%2338453f'/%3E%3Ccircle cx='1172' cy='610' r='28' fill='%2338453f'/%3E%3C/svg%3E") center/cover;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 34px;
+    }
+
+    .hero-copy {
+      max-width: 560px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-copy p {
+      color: rgba(255,255,255,.84);
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid rgba(255,255,255,.3);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(12px);
+    }
+
+    .panel {
+      background: rgba(255,255,255,.82);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 14px 34px rgba(23,32,28,.08);
+    }
+
+    .tour-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .tour {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      display: grid;
+      gap: 9px;
+      min-height: 166px;
+    }
+
+    .tour h3 {
+      font-size: 16px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .price {
+      font-weight: 800;
+      color: var(--brand-dark);
+      margin-top: auto;
+    }
+
+    .bot {
+      background: #eff6f2;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 18px 42px rgba(23,32,28,.12);
+    }
+
+    .bot-head {
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .status {
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 16px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 620px;
+    }
+
+    .bubble {
+      width: fit-content;
+      max-width: 92%;
+      padding: 11px 12px;
+      border-radius: 8px;
+      line-height: 1.42;
+      font-size: 14px;
+      box-shadow: 0 4px 14px rgba(23,32,28,.06);
+    }
+
+    .bot-msg {
+      background: white;
+      align-self: flex-start;
+    }
+
+    .user-msg {
+      background: var(--brand);
+      color: white;
+      align-self: flex-end;
+    }
+
+    .options {
+      padding: 0 16px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      cursor: pointer;
+      font-weight: 750;
+    }
+
+    .option {
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .option:hover {
+      border-color: var(--brand);
+      color: var(--brand-dark);
+    }
+
+    .composer {
+      border-top: 1px solid var(--line);
+      background: white;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    input {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-width: 0;
+      padding: 0 12px;
+      height: 42px;
+    }
+
+    .send {
+      background: var(--brand);
+      color: white;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .secondary {
+      background: var(--soft);
+      color: var(--brand-dark);
+    }
+
+    .outline {
+      background: white;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .lead-box {
+      margin-top: 14px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: pre-wrap;
+      min-height: 82px;
+    }
+
+    @media (max-width: 960px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .bot {
+        min-height: 680px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      main {
+        width: min(100% - 20px, 1180px);
+        padding: 10px 0;
+      }
+
+      .hero {
+        padding: 22px;
+        min-height: 360px;
+      }
+
+      .tour-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="workspace">
+      <div class="topbar">
+        <div class="brand">
+          <div class="mark"><img src="assets/travio-logo.png" alt="Travio Tours logo"></div>
+          <div>
+            <strong>Travio Tours</strong>
+            <p class="meta">Lead bot concept</p>
+          </div>
+        </div>
+        <button class="outline" id="resetBtn">Reset demo</button>
+      </div>
+
+      <section class="hero">
+        <div class="hero-copy">
+        <h1>Clients share contact first. Then the bot finds the right tour.</h1>
+        <p>The bot collects name and phone number, then qualifies destination, number of travelers, needs, dates, budget, and travel style before your manager calls or messages the client.</p>
+          <div class="chips">
+            <span class="chip">Telegram link</span>
+            <span class="chip">Instagram bio link</span>
+            <span class="chip">Website button</span>
+            <span class="chip">Lead capture</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Suggested tour matches</h2>
+        <p class="subtitle">These update after the client answers. In a real bot, this list comes from your tour catalog or spreadsheet.</p>
+        <div class="tour-grid" id="tourGrid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Lead your manager receives</h2>
+        <p class="subtitle">When the client shares contact details, the bot can send this summary to Telegram, CRM, Google Sheets, or email.</p>
+        <div class="actions">
+          <button class="secondary" id="copyBtn">Скопировать заявку</button>
+          <button class="outline" id="downloadBtn">Скачать CSV</button>
+        </div>
+        <div class="lead-box" id="leadBox">Пока нет заявки. Пройдите разговор с ботом.</div>
+      </section>
+    </section>
+
+    <aside class="bot" aria-label="Travio lead bot demo">
+      <div class="bot-head">
+        <div>
+          <strong>Travio Tours Bot</strong>
+          <p class="meta">Подбор тура</p>
+        </div>
+        <span class="status">online</span>
+      </div>
+      <div class="messages" id="messages"></div>
+      <div class="options" id="options"></div>
+      <form class="composer" id="composer">
+        <input id="textInput" autocomplete="off" placeholder="Введите ответ">
+        <button class="send" type="submit">Отправить</button>
+      </form>
+    </aside>
+  </main>
+
+  <script>
+    const tours = [
+      { name: "Istanbul City Escape", destination: "Турция", days: 5, style: "City", price: 690, note: "Old city, Bosphorus cruise, shopping time" },
+      { name: "Dubai Family Week", destination: "ОАЭ", days: 7, style: "Family", price: 1180, note: "Hotel, transfers, desert safari, theme parks" },
+      { name: "Maldives Honeymoon", destination: "Мальдивы", days: 6, style: "Beach", price: 2100, note: "Resort stay, speedboat, romantic dinner" },
+      { name: "Cairo And Red Sea", destination: "Египет", days: 7, style: "Beach", price: 940, note: "Pyramids, resort stay, transfers" },
+      { name: "Thailand Beach Plus", destination: "Таиланд", days: 9, style: "Beach", price: 1350, note: "Phuket, islands, optional Bangkok stop" },
+      { name: "Georgia Mountain Taste", destination: "Грузия", days: 6, style: "Nature", price: 840, note: "Tbilisi, Kazbegi, wine region, views" },
+      { name: "China Discovery", destination: "Китай", days: 8, style: "City", price: 1280, note: "City tour, shopping, cultural sights" },
+      { name: "Vietnam Coast", destination: "Вьетнам", days: 9, style: "Beach", price: 1190, note: "Da Nang, beaches, optional Hanoi stop" }
+    ];
+
+    const destinations = [
+      "Турция",
+      "Египет",
+      "Таиланд",
+      "ОАЭ",
+      "Китай",
+      "Вьетнам",
+      "Все страны",
+      "Азербайджан",
+      "Грузия",
+      "Индия",
+      "Индонезия",
+      "Катар",
+      "Кыргызстан",
+      "Малайзия",
+      "Мальдивы"
+    ];
+
+    const steps = [
+      {
+        key: "name",
+        question: "Здравствуйте! Я Travio Tours Bot. Помогу подобрать тур за 1 минуту. Напишите ваше имя.",
+        options: []
+      },
+      {
+        key: "phone",
+        question: "Спасибо. Теперь оставьте номер телефона для связи.",
+        options: []
+      },
+      {
+        key: "destination",
+        question: "Куда хотите поехать?",
+        options: destinations
+      },
+      {
+        key: "travelers",
+        question: "Сколько человек поедет?",
+        options: ["1", "2", "3-4", "Семья", "Группа"]
+      },
+      {
+        key: "needs",
+        question: "Что для вас важно в туре? Можно выбрать кнопку или написать несколько вариантов.",
+        options: ["Пляжный отдых", "Экскурсии", "Семейный отдых", "Медовый месяц", "Шопинг", "Отель 5*", "Бюджетный тур", "Горящий тур", "Авиабилеты", "Трансфер"]
+      },
+      {
+        key: "date",
+        question: "Когда планируете вылет?",
+        options: ["В этом месяце", "В следующем месяце", "Летом", "Зимой", "Гибко"]
+      },
+      {
+        key: "budget",
+        question: "Какой примерно бюджет на человека?",
+        options: ["До $700", "$700-$1200", "$1200-$2000", "$2000+", "Не знаю"]
+      },
+      {
+        key: "style",
+        question: "Какой формат тура вам ближе?",
+        options: ["Пляжный отдых", "Экскурсии", "Семейный отдых", "Медовый месяц", "Шопинг", "Бюджетный тур"]
+      }
+    ];
+
+    const state = {
+      step: 0,
+      answers: JSON.parse(localStorage.getItem("travioLead") || "{}")
+    };
+
+    const messages = document.querySelector("#messages");
+    const options = document.querySelector("#options");
+    const textInput = document.querySelector("#textInput");
+    const composer = document.querySelector("#composer");
+    const tourGrid = document.querySelector("#tourGrid");
+    const leadBox = document.querySelector("#leadBox");
+
+    function addMessage(text, who = "bot") {
+      const node = document.createElement("div");
+      node.className = `bubble ${who === "bot" ? "bot-msg" : "user-msg"}`;
+      node.textContent = text;
+      messages.appendChild(node);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function currentStep() {
+      return steps[state.step];
+    }
+
+    function renderOptions() {
+      options.innerHTML = "";
+      const step = currentStep();
+      if (!step || !step.options.length) return;
+      step.options.forEach((label) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "option";
+        btn.textContent = label;
+        btn.addEventListener("click", () => submitAnswer(label));
+        options.appendChild(btn);
+      });
+    }
+
+    function askStep() {
+      const step = currentStep();
+      if (!step) {
+        finishLead();
+        return;
+      }
+      addMessage(step.question);
+      renderOptions();
+      textInput.placeholder = step.options.length ? "Можно выбрать кнопку или написать ответ" : "Введите ответ";
+      textInput.focus();
+    }
+
+    function submitAnswer(value) {
+      const clean = value.trim();
+      if (!clean) return;
+      const step = currentStep();
+      state.answers[step.key] = clean;
+      localStorage.setItem("travioLead", JSON.stringify(state.answers));
+      addMessage(clean, "user");
+      state.step += 1;
+      renderTours();
+      renderLead();
+      setTimeout(askStep, 260);
+    }
+
+    function preferredBudgetMax() {
+      const budget = state.answers.budget || "";
+      if (budget.includes("До")) return 700;
+      if (budget.includes("700")) return 1200;
+      if (budget.includes("1200")) return 2000;
+      if (budget.includes("2000+")) return Infinity;
+      return Infinity;
+    }
+
+    function matchedTours() {
+      const destination = state.answers.destination;
+      const style = state.answers.style;
+      const max = preferredBudgetMax();
+      let filtered = tours.filter((tour) => tour.price <= max);
+      if (destination && destination !== "Все страны") {
+        filtered = filtered.filter((tour) => tour.destination === destination);
+      }
+      if (style) {
+        const byStyle = filtered.filter((tour) => tour.style === style || tour.name.includes(style));
+        if (byStyle.length) filtered = byStyle;
+      }
+      return filtered.length ? filtered : tours.slice(0, 3);
+    }
+
+    function renderTours() {
+      tourGrid.innerHTML = "";
+      matchedTours().slice(0, 3).forEach((tour) => {
+        const card = document.createElement("article");
+        card.className = "tour";
+        card.innerHTML = `
+          <h3>${tour.name}</h3>
+          <p class="meta">${tour.destination} · ${tour.days} дней · ${tour.style}</p>
+          <p class="meta">${tour.note}</p>
+          <p class="price">от $${tour.price.toLocaleString()} / человек</p>
+        `;
+        tourGrid.appendChild(card);
+      });
+    }
+
+    function leadSummary() {
+      const a = state.answers;
+      return [
+        `Имя: ${a.name || "-"}`,
+        `Телефон: ${a.phone || "-"}`,
+        `Направление: ${a.destination || "-"}`,
+        `Людей: ${a.travelers || "-"}`,
+        `Потребности: ${a.needs || "-"}`,
+        `Дата: ${a.date || "-"}`,
+        `Бюджет: ${a.budget || "-"}`,
+        `Формат тура: ${a.style || "-"}`,
+        `Подходящие туры: ${matchedTours().slice(0, 3).map((tour) => tour.name).join(", ")}`
+      ].join("\n");
+    }
+
+    function renderLead() {
+      const hasLead = state.answers.phone || state.answers.name;
+      leadBox.textContent = hasLead ? leadSummary() : "Пока нет заявки. Пройдите разговор с ботом.";
+    }
+
+    function finishLead() {
+      options.innerHTML = "";
+      addMessage("Спасибо! Я подобрал подходящие туры и передал заявку менеджеру Travio Tours. Скоро с вами свяжутся.");
+      renderLead();
+    }
+
+    composer.addEventListener("submit", (event) => {
+      event.preventDefault();
+      submitAnswer(textInput.value);
+      textInput.value = "";
+    });
+
+    document.querySelector("#resetBtn").addEventListener("click", () => {
+      localStorage.removeItem("travioLead");
+      messages.innerHTML = "";
+      state.step = 0;
+      state.answers = {};
+      renderLead();
+      renderTours();
+      askStep();
+    });
+
+    document.querySelector("#copyBtn").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(leadSummary());
+      } catch (error) {
+        leadBox.textContent = `${leadSummary()}\n\nСкопируйте текст вручную. Браузер не дал доступ к буферу обмена.`;
+      }
+    });
+
+    document.querySelector("#downloadBtn").addEventListener("click", () => {
+      const a = state.answers;
+      const headers = ["name", "contact", "destination", "travelers", "needs", "date", "budget", "style", "matches"];
+      const values = [
+        a.name || "",
+        a.phone || "",
+        a.destination || "",
+        a.travelers || "",
+        a.needs || "",
+        a.date || "",
+        a.budget || "",
+        a.style || "",
+        matchedTours().slice(0, 3).map((tour) => tour.name).join(" | ")
+      ];
+      const escapeCsv = (value) => `"${String(value).replaceAll('"', '""')}"`;
+      const csv = `${headers.join(",")}\n${values.map(escapeCsv).join(",")}\n`;
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "travio-lead.csv";
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    renderTours();
+    renderLead();
+    askStep();
+  </script>
+</body>
+</html>
